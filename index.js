@@ -39,7 +39,6 @@ function handleOperator(op) {
     firstValue = parseFloat(currentInput);
     operator = op;
 
-    // show operator in display
     display.value = currentInput + " " + op;
 
     currentInput = "";
