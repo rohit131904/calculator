@@ -14,7 +14,7 @@ buttons.forEach(button => {
         if (!isNaN(value) || value === ".") {
             handleNumber(value);
         } 
-        else if (value === "+") {
+        else if (value === "+" || value === "*") {
             handleOperator(value);
         } 
         else if (value === "=") {
@@ -53,6 +53,9 @@ function calculateResult() {
     if (operator === "+") {
         result = firstValue + secondValue;
     }
+    else if (operator === "*") {
+        result = firstValue * secondValue;
+    }
 
     display.value = result;
 
@@ -65,5 +68,5 @@ function clearAll() {
     currentInput = "";
     firstValue = null;
     operator = null;
-    display.value = "";
+    display.value = "0";
 }
