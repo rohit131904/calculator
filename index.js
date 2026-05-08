@@ -13,31 +13,34 @@ buttons.forEach(button => {
 
         if (!isNaN(value) || value === ".") {
             handleNumber(value);
-        }
-        else if(value === "%"){
+        } 
+        else if (value === "+" || value === "%") {
             handleOperator(value);
-        }
+        } 
         else if (value === "=") {
             calculateResult();
-        }
+        } 
         else if (value === "C") {
             clearAll();
         }
     });
 });
-
+// adding 
 function handleNumber(value) {
-    if (value === "." && currentInput.includes(".")) {  return;
+
+    if (value === "." && currentInput.includes(".")) {
+        return;
     }
+
     currentInput += value;
     updateDisplay();
 }
 
 function handleOperator(op) {
+
     if (currentInput === "") return;
 
     numbers.push(parseFloat(currentInput));
-
     operators.push(op);
 
     currentInput = "";
@@ -45,28 +48,39 @@ function handleOperator(op) {
 }
 
 function calculateResult() {
+
     if (currentInput === "") return;
 
     numbers.push(parseFloat(currentInput));
 
     for (let i = 0; i < operators.length; i++) {
 
-      if (operators[i] === "%") {
+        // Percentage Logic
+        if (operators[i] === "%") {
 
-    let first = numbers[i];
+            let first = numbers[i];
+            let second = numbers[i + 1];
 
-    let second = numbers[i + 1];
+            let percentValue = (first / 100) * second;
 
-    let percentValue = (first / 100) * second;
+            numbers.splice(i, 2, percentValue);
+            operators.splice(i, 1);
 
-    numbers.splice(i, 2, percentValue);
+            i--;
+        }
 
-    operators.splice(i, 1);
+        // Addition Logic
+        else if (operators[i] === "+") {
 
-    i--;
+            let sum = numbers[i] + numbers[i + 1];
 
-}
+            numbers.splice(i, 2, sum);
+            operators.splice(i, 1);
+
+            i--;
+        }
     }
+
     let result = numbers[0];
 
     display.value = result;
@@ -74,13 +88,14 @@ function calculateResult() {
     numbers = [];
     operators = [];
     currentInput = result.toString();
-
 }
 
 function clearAll() {
+
     currentInput = "";
     numbers = [];
     operators = [];
+
     display.value = "0";
 }
 
@@ -93,15 +108,11 @@ function updateDisplay() {
         expression += numbers[i];
 
         if (operators[i]) {
-
             expression += " " + operators[i] + " ";
-
         }
-
     }
 
     expression += currentInput;
 
     display.value = expression;
-
 }
