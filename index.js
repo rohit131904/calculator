@@ -20,18 +20,26 @@ buttons.forEach(button => {
         }
 
         // Operators
-        else if (value === "%" || value === "*" || value === "+" || value === "-") {
+        else if (
+            value === "%" ||
+            value === "*" ||
+            value === "+" ||
+            value === "-" ||
+            value === "/"
+        ) {
 
             handleOperator(value);
 
         }
 
+        // Equal button
         else if (value === "=") {
 
             calculateResult();
 
         }
 
+        // Clear button
         else if (value === "C") {
 
             clearAll();
@@ -43,8 +51,11 @@ buttons.forEach(button => {
 
 function handleNumber(value) {
 
+    // Prevent multiple decimals
     if (value === "." && currentInput.includes(".")) {
+
         return;
+
     }
 
     currentInput += value;
@@ -59,6 +70,7 @@ function handleOperator(op) {
     if (currentInput === "") return;
 
     numbers.push(parseFloat(currentInput));
+
     operators.push(op);
 
     currentInput = "";
@@ -84,12 +96,8 @@ function calculateResult() {
         // Percentage Logic
         if (operators[i] === "%") {
 
-            let percentValue = (first / 100) * second;
+            result = (first / 100) * second;
 
-            numbers.splice(i, 2, percentValue);
-            operators.splice(i, 1);
-
-            i--;
         }
 
         // Addition Logic
@@ -97,10 +105,6 @@ function calculateResult() {
 
             result = first + second;
 
-            numbers.splice(i, 2, result);
-            operators.splice(i, 1);
-
-            i--;
         }
 
         // Subtraction Logic
@@ -108,10 +112,6 @@ function calculateResult() {
 
             result = first - second;
 
-            numbers.splice(i, 2, result);
-            operators.splice(i, 1);
-
-            i--;
         }
 
         // Multiplication Logic
@@ -119,12 +119,35 @@ function calculateResult() {
 
             result = first * second;
 
-            numbers.splice(i, 2, result);
-            operators.splice(i, 1);
+        }
 
-            i--;
+        // Division Logic
+        else if (operators[i] === "/") {
+
+            if (second === 0) {
+
+                display.value = "Cannot divide by 0";
+
+                numbers = [];
+
+                operators = [];
+
+                currentInput = "";
+
+                return;
+
+            }
+
+            result = first / second;
 
         }
+
+        // Replace values with result
+        numbers.splice(i, 2, result);
+
+        operators.splice(i, 1);
+
+        i--;
 
     }
 
@@ -161,8 +184,11 @@ function updateDisplay() {
         expression += numbers[i];
 
         if (operators[i]) {
+
             expression += " " + operators[i] + " ";
+
         }
+
     }
 
     expression += currentInput;
