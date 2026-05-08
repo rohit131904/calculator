@@ -7,44 +7,68 @@ let operators = [];
 
 buttons.forEach(button => {
     button.addEventListener("click", () => {
+
         let value = button.dataset.value;
 
         if (!value) return;
 
+        // Numbers and decimal
         if (!isNaN(value) || value === ".") {
+
             handleNumber(value);
+
+        }
+
+        // Operators
+        else if (value === "%" || value === "*") {
+
+            handleOperator(value);
+
+        }
+
+        // Equal button
         } 
         else if (value === "+" || value === "%") {
             handleOperator(value);
         } 
         else if (value === "=") {
+
             calculateResult();
         } 
         else if (value === "C") {
+
             clearAll();
+
         }
+
     });
 });
 // adding 
 function handleNumber(value) {
+
 
     if (value === "." && currentInput.includes(".")) {
         return;
     }
 
     currentInput += value;
+
     updateDisplay();
+
 }
 
 function handleOperator(op) {
 
+    // Prevent operator without number
     if (currentInput === "") return;
 
     numbers.push(parseFloat(currentInput));
     operators.push(op);
 
     currentInput = "";
+
     updateDisplay();
+
 }
 
 function calculateResult() {
@@ -53,8 +77,37 @@ function calculateResult() {
 
     numbers.push(parseFloat(currentInput));
 
+    // Process operators one by one
     for (let i = 0; i < operators.length; i++) {
 
+        let first = numbers[i];
+
+        let second = numbers[i + 1];
+
+        let result = 0;
+
+        // Percentage Logic
+        if (operators[i] === "%") {
+
+            result = (first / 100) * second;
+
+        }
+
+        // Multiplication Logic
+        else if (operators[i] === "*") {
+
+            result = first * second;
+
+        }
+
+        // Replace old values with result
+        numbers.splice(i, 2, result);
+
+        operators.splice(i, 1);
+
+        i--;
+
+    }
         // Percentage Logic
         if (operators[i] === "%") {
 
@@ -83,20 +136,29 @@ function calculateResult() {
 
     let result = numbers[0];
 
-    display.value = result;
+    let finalResult = numbers[0];
+
+    display.value = finalResult;
+
+    currentInput = finalResult.toString();
 
     numbers = [];
+
     operators = [];
+
     currentInput = result.toString();
 }
 
 function clearAll() {
 
     currentInput = "";
+
     numbers = [];
+
     operators = [];
 
     display.value = "0";
+
 }
 
 function updateDisplay() {
