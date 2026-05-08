@@ -26,15 +26,14 @@ buttons.forEach(button => {
 
         }
 
-        // Equal button
-        } 
-        else if (value === "+" || value === "%") {
+
+        else if (value === "+") {
             handleOperator(value);
-        } 
+        }
         else if (value === "=") {
 
             calculateResult();
-        } 
+        }
         else if (value === "C") {
 
             clearAll();
@@ -43,7 +42,7 @@ buttons.forEach(button => {
 
     });
 });
-// adding 
+
 function handleNumber(value) {
 
 
@@ -77,7 +76,6 @@ function calculateResult() {
 
     numbers.push(parseFloat(currentInput));
 
-    // Process operators one by one
     for (let i = 0; i < operators.length; i++) {
 
         let first = numbers[i];
@@ -86,28 +84,6 @@ function calculateResult() {
 
         let result = 0;
 
-        // Percentage Logic
-        if (operators[i] === "%") {
-
-            result = (first / 100) * second;
-
-        }
-
-        // Multiplication Logic
-        else if (operators[i] === "*") {
-
-            result = first * second;
-
-        }
-
-        // Replace old values with result
-        numbers.splice(i, 2, result);
-
-        operators.splice(i, 1);
-
-        i--;
-
-    }
         // Percentage Logic
         if (operators[i] === "%") {
 
@@ -132,6 +108,19 @@ function calculateResult() {
 
             i--;
         }
+
+        // Multiplication Logic
+        else if (operators[i] === "*") {
+
+            result = first * second;
+            numbers.splice(i, 2, result);
+
+            operators.splice(i, 1);
+
+            i--;
+
+        }
+
     }
 
     let result = numbers[0];
@@ -147,6 +136,7 @@ function calculateResult() {
     operators = [];
 
     currentInput = result.toString();
+
 }
 
 function clearAll() {
@@ -177,4 +167,5 @@ function updateDisplay() {
     expression += currentInput;
 
     display.value = expression;
+
 }
