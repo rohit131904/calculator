@@ -25,7 +25,7 @@ buttons.forEach(button => {
         }
     });
 });
-
+// adding 
 function handleNumber(value) {
 
     if (value === "." && currentInput.includes(".")) {
