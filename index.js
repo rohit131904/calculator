@@ -27,13 +27,14 @@ buttons.forEach(button => {
         }
 
         // Equal button
+        } 
+        else if (value === "+" || value === "%") {
+            handleOperator(value);
+        } 
         else if (value === "=") {
 
             calculateResult();
-
-        }
-
-        // Clear button
+        } 
         else if (value === "C") {
 
             clearAll();
@@ -42,14 +43,12 @@ buttons.forEach(button => {
 
     });
 });
-
+// adding 
 function handleNumber(value) {
 
-    // Prevent multiple decimals
+
     if (value === "." && currentInput.includes(".")) {
-
         return;
-
     }
 
     currentInput += value;
@@ -64,7 +63,6 @@ function handleOperator(op) {
     if (currentInput === "") return;
 
     numbers.push(parseFloat(currentInput));
-
     operators.push(op);
 
     currentInput = "";
@@ -110,6 +108,33 @@ function calculateResult() {
         i--;
 
     }
+        // Percentage Logic
+        if (operators[i] === "%") {
+
+            let first = numbers[i];
+            let second = numbers[i + 1];
+
+            let percentValue = (first / 100) * second;
+
+            numbers.splice(i, 2, percentValue);
+            operators.splice(i, 1);
+
+            i--;
+        }
+
+        // Addition Logic
+        else if (operators[i] === "+") {
+
+            let sum = numbers[i] + numbers[i + 1];
+
+            numbers.splice(i, 2, sum);
+            operators.splice(i, 1);
+
+            i--;
+        }
+    }
+
+    let result = numbers[0];
 
     let finalResult = numbers[0];
 
@@ -121,6 +146,7 @@ function calculateResult() {
 
     operators = [];
 
+    currentInput = result.toString();
 }
 
 function clearAll() {
@@ -144,13 +170,10 @@ function updateDisplay() {
         expression += numbers[i];
 
         if (operators[i]) {
-
             expression += " " + operators[i] + " ";
-
         }
-
     }
- // Hello
+
     expression += currentInput;
 
     display.value = expression;
