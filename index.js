@@ -150,9 +150,8 @@ function updateDisplay() {
         }
 
     }
-
+ // Hello
     expression += currentInput;
 
     display.value = expression;
-
 }
