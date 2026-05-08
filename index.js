@@ -20,20 +20,18 @@ buttons.forEach(button => {
         }
 
         // Operators
-        else if (value === "%" || value === "*") {
+        else if (value === "%" || value === "*" || value === "+" || value === "-") {
 
             handleOperator(value);
 
         }
 
-
-        else if (value === "+") {
-            handleOperator(value);
-        }
         else if (value === "=") {
 
             calculateResult();
+
         }
+
         else if (value === "C") {
 
             clearAll();
@@ -44,7 +42,6 @@ buttons.forEach(button => {
 });
 
 function handleNumber(value) {
-
 
     if (value === "." && currentInput.includes(".")) {
         return;
@@ -61,15 +58,8 @@ function handleOperator(op) {
     // Prevent operator without number
     if (currentInput === "") return;
 
-<<<<<<< HEAD
-    firstValue = parseFloat(currentInput);
-    operator = op;
-
-    display.value = currentInput + " " + op;
-=======
     numbers.push(parseFloat(currentInput));
     operators.push(op);
->>>>>>> origin/staging
 
     currentInput = "";
 
@@ -94,9 +84,6 @@ function calculateResult() {
         // Percentage Logic
         if (operators[i] === "%") {
 
-            let first = numbers[i];
-            let second = numbers[i + 1];
-
             let percentValue = (first / 100) * second;
 
             numbers.splice(i, 2, percentValue);
@@ -108,9 +95,20 @@ function calculateResult() {
         // Addition Logic
         else if (operators[i] === "+") {
 
-            let sum = numbers[i] + numbers[i + 1];
+            result = first + second;
 
-            numbers.splice(i, 2, sum);
+            numbers.splice(i, 2, result);
+            operators.splice(i, 1);
+
+            i--;
+        }
+
+        // Subtraction Logic
+        else if (operators[i] === "-") {
+
+            result = first - second;
+
+            numbers.splice(i, 2, result);
             operators.splice(i, 1);
 
             i--;
@@ -120,8 +118,8 @@ function calculateResult() {
         else if (operators[i] === "*") {
 
             result = first * second;
-            numbers.splice(i, 2, result);
 
+            numbers.splice(i, 2, result);
             operators.splice(i, 1);
 
             i--;
@@ -129,8 +127,6 @@ function calculateResult() {
         }
 
     }
-
-    let result = numbers[0];
 
     let finalResult = numbers[0];
 
@@ -141,8 +137,6 @@ function calculateResult() {
     numbers = [];
 
     operators = [];
-
-    currentInput = result.toString();
 
 }
 
