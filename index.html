@@ -19,7 +19,7 @@
       background: #1c1c1c;
       padding: 20px;
       border-radius: 20px;
-      width: 280px;
+      width: 300px; /* Widened slightly for the new layout */
       box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     }
 
@@ -35,7 +35,6 @@
       background: #2a2a2a;
       color: #fff;
       outline: none;
-      font-family: Arial, sans-serif;
     }
 
     .buttons {
@@ -48,12 +47,11 @@
       height: 60px;
       border: none;
       border-radius: 12px;
-      font-size: 20px;
+      font-size: 18px;
       cursor: pointer;
       background: #3a3a3a;
       color: white;
       transition: background 0.2s, transform 0.1s;
-      font-family: Arial, sans-serif;
     }
 
     button:hover  { background: #505050; }
@@ -62,13 +60,17 @@
     .operator       { background: #ff9f0a; }
     .operator:hover { background: #e68a00; }
 
-    .clear          { background: #ff3b30; }
-    .clear:hover    { background: #d63027; }
+    .clear           { background: #ff3b30; }
+    .clear:hover     { background: #d63027; }
 
-    .equal          { background: #28a745; grid-column: span 2; }
-    .equal:hover    { background: #218838; }
+    .equal           { background: #28a745; grid-column: span 2; }
+    .equal:hover     { background: #218838; }
 
-    .zero           { grid-column: span 2; }
+    .zero            { grid-column: span 1; } /* Changed to span 1 to make room */
+    
+    /* New Style for your specific task */
+    .exp-btn { background: #5856d6; }
+    .exp-btn:hover { background: #4543ad; }
   </style>
 </head>
 <body>
@@ -82,7 +84,6 @@
       <button class="operator" data-value="%">%</button>
       <button class="operator" data-value="/">÷</button>
       <button class="operator" data-value="*">×</button>
-      <button data-value=".">.</button>
 
       <!-- Row 2 -->
       <button data-value="7">7</button>
@@ -100,11 +101,12 @@
       <button data-value="1">1</button>
       <button data-value="2">2</button>
       <button data-value="3">3</button>
-      <button class="equal"    data-value="=">=</button>
+      <button data-value=".">.</button>
 
       <!-- Row 5 -->
-      <button class="zero" data-value="0">0</button>
-      
+      <button class="zero"     data-value="0">0</button>
+      <button class="exp-btn"  data-value="exp">10<sup>x</sup></button>
+      <button class="equal"    data-value="=">=</button>
     </div>
   </div>
 

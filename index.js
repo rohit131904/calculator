@@ -25,7 +25,8 @@ buttons.forEach(button => {
             value === "*" ||
             value === "+" ||
             value === "-" ||
-            value === "/"
+            value === "/" ||
+            value === "exp"
         ) {
 
             handleOperator(value);
@@ -80,87 +81,59 @@ function handleOperator(op) {
 }
 
 function calculateResult() {
+    if (currentInput === "" && numbers.length === 0) return;
 
-    if (currentInput === "") return;
-
-    numbers.push(parseFloat(currentInput));
+    // Push the last number entered into the array
+    if (currentInput !== "") {
+        numbers.push(parseFloat(currentInput));
+    }
 
     for (let i = 0; i < operators.length; i++) {
-
         let first = numbers[i];
-
         let second = numbers[i + 1];
-
         let result = 0;
 
-        // Percentage Logic
+        // 1. Handle Exponential Logic (Scientific/Unary style)
+        if (operators[i] === "exp") {
+            result = Math.pow(10, first);
+            
+            // This is the important part: 
+            // It replaces only 1 number and 1 operator with the result
+            numbers.splice(i, 1, result); 
+            operators.splice(i, 1);
+            i--; 
+            continue; // Skip the rest of the loop for this turn
+        }
+
+        // 2. Handle Binary Logic (Needs two numbers)
         if (operators[i] === "%") {
-
             result = (first / 100) * second;
-
-        }
-
-        // Addition Logic
-        else if (operators[i] === "+") {
-
+        } else if (operators[i] === "+") {
             result = first + second;
-
-        }
-
-        // Subtraction Logic
-        else if (operators[i] === "-") {
-
+        } else if (operators[i] === "-") {
             result = first - second;
-
-        }
-
-        // Multiplication Logic
-        else if (operators[i] === "*") {
-
+        } else if (operators[i] === "*") {
             result = first * second;
-
-        }
-
-        // Division Logic
-        else if (operators[i] === "/") {
-
+        } else if (operators[i] === "/") {
             if (second === 0) {
-
                 display.value = "Cannot divide by 0";
-
-                numbers = [];
-
-                operators = [];
-
-                currentInput = "";
-
+                clearAll();
                 return;
-
             }
-
             result = first / second;
-
         }
 
-        // Replace values with result
+        // Replace 2 numbers and 1 operator with the result
         numbers.splice(i, 2, result);
-
         operators.splice(i, 1);
-
         i--;
-
     }
 
     let finalResult = numbers[0];
-
     display.value = finalResult;
-
     currentInput = finalResult.toString();
-
     numbers = [];
-
     operators = [];
-
 }
 
 function clearAll() {
